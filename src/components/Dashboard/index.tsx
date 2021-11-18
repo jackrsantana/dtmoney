@@ -3,7 +3,7 @@ import { TransactionsTables } from "../TransactionsTables";
 
 import { Container } from "./styles";
 
-export function Dasgboard () {
+export function Dashboard () {
   return (
     <Container>
       <Summary/>
