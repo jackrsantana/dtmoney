@@ -1,6 +1,6 @@
-import { FormEvent, useContext, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import Modal from 'react-modal'
-import { TransactionsContext } from '../../TransactionsContext'
+import { useTransactions } from '../../hooks/useTransactions'
 
 import incomeImg from '../../assets/income.svg'
 import outcomeImg from '../../assets/outcome.svg'
@@ -13,21 +13,21 @@ interface NewTransactionModalProps {
   onRequestClose: () => void;
 }
 
-export function NewTransactionModal({isOpen, onRequestClose}: NewTransactionModalProps) {
-  const { createTransaction } = useContext(TransactionsContext)
+export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionModalProps) {
+  const { createTransaction } = useTransactions();
 
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState(0);
   const [category, setCategory] = useState('');
   const [type, setType] = useState('deposit')
 
-  async function handleCreateNewTransaction (event: FormEvent) {
+  async function handleCreateNewTransaction(event: FormEvent) {
     event.preventDefault();
 
     await createTransaction({
-      title, 
-      amount, 
-      category, 
+      title,
+      amount,
+      category,
       type
     })
 
@@ -39,56 +39,56 @@ export function NewTransactionModal({isOpen, onRequestClose}: NewTransactionModa
     onRequestClose()
   }
 
-  return (    
-    <Modal 
+  return (
+    <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       overlayClassName="react-modal-overlay"
       className="react-modal-content"
-      >
+    >
 
-      <button 
-        type="button" 
-        onClick={onRequestClose} 
+      <button
+        type="button"
+        onClick={onRequestClose}
         className="react-modal-close">
         <img src={closeImg} alt="Fechar modal" />
       </button>
-        
+
       <Container onSubmit={handleCreateNewTransaction}>
         <h2>Cadastrar transação</h2>
 
-        <input 
-          placeholder="Título" 
-          value={title} 
-          onChange={event =>setTitle(event.target.value)}/>
+        <input
+          placeholder="Título"
+          value={title}
+          onChange={event => setTitle(event.target.value)} />
 
-        <input 
-          type="number" 
+        <input
+          type="number"
           placeholder="Valor"
           value={amount}
-          onChange={event =>setAmount(Number(event.target.value))}/>
+          onChange={event => setAmount(Number(event.target.value))} />
 
-        <input 
-          placeholder="Categoria" 
+        <input
+          placeholder="Categoria"
           value={category}
-          onChange={event =>setCategory(event.target.value)}/>
+          onChange={event => setCategory(event.target.value)} />
 
         <TransactionTypeContainer>
-          <RadioBox 
-          type="button"
-          isActive={type === 'deposit'}
-          onClick={() => {setType('deposit')}}
-          activeColor="green">
-            <img src={incomeImg} alt="Entrada"/>
+          <RadioBox
+            type="button"
+            isActive={type === 'deposit'}
+            onClick={() => { setType('deposit') }}
+            activeColor="green">
+            <img src={incomeImg} alt="Entrada" />
             <span>Entrada</span>
           </RadioBox>
 
-          <RadioBox 
-          type="button"
-          isActive={type === 'withdraw'}
-          onClick={() => {setType('withdraw')}}
-          activeColor="red">
-            <img src={outcomeImg} alt="Saída"/>
+          <RadioBox
+            type="button"
+            isActive={type === 'withdraw'}
+            onClick={() => { setType('withdraw') }}
+            activeColor="red">
+            <img src={outcomeImg} alt="Saída" />
             <span>Saída</span>
           </RadioBox>
         </TransactionTypeContainer>
